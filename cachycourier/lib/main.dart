@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cachycourier/screens/authentication/signup.dart';
 import 'package:cachycourier/screens/authentication/login.dart';
+import 'package:cachycourier/screens/authentication/reset.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main(){
@@ -18,7 +19,8 @@ class Cachycourier extends StatelessWidget{
       // ),
       routes:<String,WidgetBuilder>{
         '/signuppage':(BuildContext context)=>Signup(),
-        '/loginpage':(BuildContext context)=>Login()
+        '/loginpage':(BuildContext context)=>Login(),
+        '/resetpage':(BuildContext context)=>ResetPassword()
       },
       home: HomePage(),
     );

@@ -60,7 +60,7 @@ router.post('/signup', async function (req, res, next) {
        */
       
       console.log('hiiiiiii')
-      const link = `http://10.0.52.214:5000/auth/verify/${body.email}`
+      const link = `http://${process.env.ipadress}:${process.env.port}/auth/verify/${body.email}`
         const resetEmail = {
           to: body.email,
           from: 'tunuguntlaooha1234@gmail.com',
@@ -106,8 +106,8 @@ router.post('/forgot', async (req, res, next) => {
     .then(
       enter_user => {
         if (enter_user.length < 1) {
-          res.send('no user exists')
-          res.render('../views/forgot');
+          res.status(404).json({msg:'user not found'})
+        
         }
 
 
@@ -117,7 +117,7 @@ router.post('/forgot', async (req, res, next) => {
         enter_user[0].save(function (err) {
           if (err) { return res.status(500).send({ msg: err.message }); }
         });
-        const link = `http://localhost:5000/auth/reset/${token}`
+        const link = `http://${process.env.ipadress}:${process.env.port}/auth/reset/${token}`
         const resetEmail = {
           to: enter_user[0].email,
           from: 'tunuguntlaooha1234@gmail.com',
@@ -132,7 +132,7 @@ router.post('/forgot', async (req, res, next) => {
             res.status(500).send({ msg: err.message });
           }
           
-          res.render('../views/forgot');
+          res.status(200).json({msg:'mail sent'})
         });
        
       })
@@ -157,6 +157,7 @@ router.get('/reset/:token', (req, res) => {
   user.find({ resetPasswordExpires: { $gt: Date.now() }, resetPasswordToken: req.params.token })
     .exec()
     .then(
+
       enter_user => {
         if (enter_user.length < 1) {
           res.send('Password reset token is invalid or has expired')
@@ -165,7 +166,8 @@ router.get('/reset/:token', (req, res) => {
 
 
         data = {}
-        data.token = enter_user.resetPasswordToken
+        data.token = enter_user[0].resetPasswordToken
+        
         res.render('../views/reset', data);
 
 
@@ -206,7 +208,7 @@ router.post('/reset/:token', async function (req, res,next){
           
           
           req.logIn(enter_user[0], function () {
-            res.render('../views/home');
+           res.render("../views/home")
           });
         });
        

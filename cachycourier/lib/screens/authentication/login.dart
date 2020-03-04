@@ -176,7 +176,7 @@ class _LoginPageState extends State<Login> {
                               style: TextStyle(fontSize: 15),
                             ),
                             onPressed: () {
-                              // Navigator.of(context).pushNamed('/resetPasswordPage');
+                               Navigator.of(context).pushNamed('/resetpage');
                             },
                             textColor: Colors.pink,
                           ),

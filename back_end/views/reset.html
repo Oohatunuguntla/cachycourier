@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <body>
-    <form action="http://localhost:5000/auth/reset/803cdb8f1fa38c938940b90555170bc9d68e4c69" method="POST">
+    <h1>http://<%= process.env.ipadress %>:<%= process.env.port %>/auth/reset/<%= data.token %></h1>
+    <form action="http://<%= process.env.ipadress %>:<%= process.env.port %>/auth/reset/<%= data.token %>" method="POST">
         New Password
         <input type="password" name="password">
         <button type="submit"></button>

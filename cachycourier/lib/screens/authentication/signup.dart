@@ -230,7 +230,7 @@ class Signupstate extends State<Signup> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        textColor: Colors.blue,
+                        textColor: Colors.pink,
                       )
                     ],
                   )),
@@ -256,7 +256,6 @@ class Signupstate extends State<Signup> {
       debugPrint('Validated the form');
       
       try {
-        await DotEnv().load('.env');
         print(_email);
         print(_password);
         print(DotEnv().env['ipadress']);
@@ -266,11 +265,11 @@ class Signupstate extends State<Signup> {
     http.Response resp = await http.post(url,body: {'email':_email,'password':_password});  // 10.0.2.2 for emulator
     if (resp.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(resp.body);
-      print("success");
+      print('$jsonResponse');
       //  Navigator.of(context).pushNamed('/signup');
     }
     else{
-      print("thussss");
+      print("fail");
       // Navigator.of(context).pushNamed('/main');
     }
       } catch (error) {

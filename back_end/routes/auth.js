@@ -59,8 +59,8 @@ router.post('/signup', async function (req, res, next) {
        * comment the following lines and redirect to login page for authenticating.
        */
       
-      
-      const link = `http://localhost:5000/auth/verify/${body.email}`
+      console.log('hiiiiiii')
+      const link = `http://10.0.52.214:5000/auth/verify/${body.email}`
         const resetEmail = {
           to: body.email,
           from: 'tunuguntlaooha1234@gmail.com',
@@ -78,10 +78,12 @@ router.post('/signup', async function (req, res, next) {
 
 
       req.logIn(newUser, function () {
-        res.render('../views/home');
+        // res.render('../views/home');
+        res.status(200).json(newUser);
       });
     } catch (error) {
-      next(error);
+      console.log(error)
+      return res.status(500).json({message: error.message})
     }
   }
 })
@@ -213,13 +215,30 @@ router.post('/reset/:token', async function (req, res,next){
       });
 });
 
+router.get('/success',(req,res)=>{
+  console.log('sucess')
+  res.status(200).json();
+})
+
+router.get('/failure',(req,res)=>{
+  console.log('fail')
+  res.status(500).json();
+})
+
 module.exports = function (passport) {
 
-  router.post('/login', passport.authenticate('local', {
-    failureRedirect: '/auth/login',
-  }), async function (req, res) {
-    res.render('../views/home');
-  })
+  router.post('/login',
+    passport.authenticate('local'),
+    function(req,res){
+      
+        console.log("success")
+        res.status(200).json({msg:'success'});
+    
+    }
+    
+    );
+
+  
 
 
   return router;

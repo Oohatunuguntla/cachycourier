@@ -58,12 +58,13 @@ passport.use(new LocalStrategy(
          * Match Password
          */
         console.log(password)
-        
+        console.log(email)
         const match = await bcrypt.compare(password, userObj.password);
         
         if (match) {
 
             /** All Set */
+            console.log("yesss");
             return done(null, {
                 id: userObj._id
             })
@@ -73,7 +74,6 @@ passport.use(new LocalStrategy(
     /**
      * Set error message in flash and call the callback.
      */
-    req.flash('error', 'Wrong Credentials');
     return done(null, false);
 }));
 

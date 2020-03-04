@@ -1,17 +1,7 @@
 const mongoose=require('mongoose')
 const userschema=mongoose.Schema({
     
-    username:{
-        type:String,
-        required:true
-
-    },
-    mobilenumber:{
-        type:Number,
-        required:true,
-
-
-    },
+   
     email:{
         type:String,
         required:true,
@@ -24,32 +14,14 @@ const userschema=mongoose.Schema({
         required:true
 
     },
-    street:{
-        type:String,
-        required:true
-
-    },
-    city:{
-        type:String,
-        required:true
-
-    },
-    state:{
-        type:String,
-        required:true
-
-    },
-    pincode:{
-        type:String,
-        required:true
-
-    },
+    isVerified: { type: Boolean, default: false },
+    
     type:{
         type:String,
-        required:true
+      
 
     },
-    isVerified: { type: Boolean, default: false },
+   
 
     resetPasswordToken:{
         type:String,

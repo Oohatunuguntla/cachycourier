@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cachycourier/screens/authentication/signup.dart';
 import 'package:cachycourier/screens/authentication/login.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 void main(){
   runApp(Cachycourier());
 }
 class Cachycourier extends StatelessWidget{
   @override
   Widget build(BuildContext context){
+    DotEnv().load('.env');
     return MaterialApp(
       // title: 'Cachycourier',
       // debugShowCheckedModeBanner: false,
@@ -15,22 +18,22 @@ class Cachycourier extends StatelessWidget{
       // ),
       routes:<String,WidgetBuilder>{
         '/signuppage':(BuildContext context)=>Signup(),
-        //'/loginpage':(BuildContext context)=>Login()
+        '/loginpage':(BuildContext context)=>Login()
       },
-      home:new HomePage(),
+      home: HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget{
   @override
-  _HomePageState createState() => new _HomePageState();
+  _HomePageState createState() => _HomePageState();
 
 }
 
 class _HomePageState extends State<HomePage>{
   @override
   Widget build(BuildContext context){
-    Navigator.of(context).pushReplacementNamed('/signuppage');
+    return Login();
   }
 }

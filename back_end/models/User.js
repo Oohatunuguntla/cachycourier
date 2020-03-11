@@ -18,10 +18,21 @@ const userschema=mongoose.Schema({
     
     type:{
         type:String,
-      
+        
 
     },
-   
+   city:{
+        type:String,
+        required:true
+   },
+   pin:{
+        type:nimber,
+        required:true
+   },
+   mobilenumber:{
+        type:number,
+        required:true
+   },
 
     resetPasswordToken:{
         type:String,

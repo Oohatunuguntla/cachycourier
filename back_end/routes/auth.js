@@ -339,7 +339,7 @@ transporter.sendMail(sendnotificationtocustomer, function (err) {
  
 
 })
-router.get('/sendnotificationtocustomer')
+
 module.exports = function (passport) {
 
   router.post('/login',

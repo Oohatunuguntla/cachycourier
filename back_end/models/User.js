@@ -26,11 +26,11 @@ const userschema=mongoose.Schema({
         required:true
    },
    pin:{
-        type:nimber,
+        type:Number,
         required:true
    },
    mobilenumber:{
-        type:number,
+        type:String,
         required:true
    },
 

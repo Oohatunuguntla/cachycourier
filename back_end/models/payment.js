@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 const parcel_paymentschema=mongoose.Schema({
     id:{
-        type:number,
+        type:String,
         unique:true
     },
     ispaid:{
@@ -9,7 +9,7 @@ const parcel_paymentschema=mongoose.Schema({
         required:true
     },
     cost:{
-        type:number,
+        type:Number,
         required:true
     }
 })

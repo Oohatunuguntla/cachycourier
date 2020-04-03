@@ -10,7 +10,7 @@ const deliveryguyschema=mongoose.Schema({
 
     },
     id:{
-        type:number,
+        type:String,
         required:true,
         unique:true
 

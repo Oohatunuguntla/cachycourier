@@ -11,6 +11,10 @@ const parcelschema=mongoose.Schema({
         match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
 
     },
+    timetopick:{
+        type:String,
+        required:true,
+    },
     weight:{
         type:Number,
         required:true
@@ -38,6 +42,9 @@ const parcelschema=mongoose.Schema({
     cost:{
         type:Number,
         required:true
+    },
+    promocode:{
+        type:String,
     }
 
 });

@@ -9,6 +9,10 @@ const userschema=mongoose.Schema({
         match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
 
     },
+    name:{
+        type:String,
+        required:true
+    },
     password:{
         type:String,
         required:true

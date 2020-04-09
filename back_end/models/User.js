@@ -22,7 +22,7 @@ const userschema=mongoose.Schema({
     
     type:{
         type:String,
-        
+        required:true
 
     },
    city:{

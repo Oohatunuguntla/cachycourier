@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const user = require('../models/User');
 const parcel=require('../models/parcel');
 const payment=require('../models/payment');
+const notification=require('../models/notification');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport({ service: "gmail", auth: { user: 'tunuguntlaooha1234@gmail.com', pass: '9840290558' } });
 router.get('/login', function (req, res) {
@@ -228,44 +229,54 @@ router.get('/failure',(req,res)=>{
   console.log('fail')
   res.status(500).json();
 })
-router.get('/sendnotificationtodeliveryguy',async function(req,res){
+router.get('/sendnotification', async function(req,res,next){
   deliveryemail="venkat9989383223@gmail.com"
   sourceemail="oohas1234@gmail.com"
+  //
   const deliveryguydetails=await user.findOne({email:deliveryemail});
   deliveryguymobilenumber=deliveryguydetails['mobilenumber'];
+  //
   const parceldetails = await parcel.findOne({ id:'1' });
   id=parceldetails['id']
   sourceaddress=parceldetails['sourceaddress']
   destinationaddress=parceldetails['destinationaddress']
   parceltype=parceldetails['parceltype']
   cost=parceldetails['cost']
+  //
   const paymentdetails=await payment.findOne({id:id});
   ispaid=paymentdetails['ispaid']
-  const link = `http://${process.env.ipadress}:${process.env.port}/auth/sendnotificationtocustomer`
+  const link = `http://${process.env.ipadress}:${process.env.port}`
  if(ispaid) {
- const sendnotificationtodeliveryguy = {
+    const sendnotificationtodeliveryguy = {
     to: deliveryemail,
     from: 'tunuguntlaooha1234@gmail.com',
     subject: 'Cachy_courrier delivery assignment',
- //html: `Hello,<br> Please Click on the link to verify your email.<br><a href="${link}">${link}</a>`,
+    //html: `Hello,<br> Please Click on the link to verify your email.<br><a href="${link}">${link}</a>`,
     html:`Hello ${deliveryemail},<br>You are assigned to parcelid ${id} and details are as follows:<br>
     sourceaddress:${sourceaddress}<br>
     destinationaddress:${destinationaddress}<br>
     parceltype:${parceltype}<br>
     Payment is already done
-    Please Click on the link to know route of customer .<br><a href="${link}">route</a> `
+     `
     
   }
-  transporter.sendMail(sendnotificationtodeliveryguy, function (err) {
+  transporter.sendMail(sendnotificationtodeliveryguy,async function (err) {
     if (err) {
       console.log("didnot send email to  delivery guy assignment");
       res.status(500).send({ msg: err.message });
     }
+    else{
+      newnotify={'email':sendnotificationtodeliveryguy['to'],'notificationtext':sendnotificationtodeliveryguy['html']}
+      const newnotification=new notification(newnotify)
+      console.log(newnotification)
+      await newnotification.save()
+    }
   });
+  
 }
 else{
   
-  const sendnotificationtodeliveryguy = {
+    const sendnotificationtodeliveryguy = {
     to: deliveryemail,
     from: 'tunuguntlaooha1234@gmail.com',
     subject: 'Cachy_courrier delivery assignment',
@@ -279,15 +290,56 @@ else{
     Please Click on the link to know route of customer .<br><a href="${link}">route</a>
   ` 
   }
-  transporter.sendMail(sendnotificationtodeliveryguy, function (err) {
+  transporter.sendMail(sendnotificationtodeliveryguy, async function (err) {
     
     if (err) {
       console.log("didnot send email to delivery guy assignment");
       res.status(500).send({ msg: err.message });
     }
+    else{
+      newnotify={'email':sendnotificationtodeliveryguy['to'],'notificationtext':sendnotificationtodeliveryguy['html']}
+      const newnotification=new notification(newnotify)
+      console.log(newnotification)
+      await newnotification.save()
+    }
     
   });
 }
+const sendnotificationtocustomer = {
+  to: sourceemail,
+  from: 'tunuguntlaooha1234@gmail.com',
+  subject: 'Cachy_courrier parcel',
+  //html: `Hello,<br> Please Click on the link to verify your email.<br><a href="${link}">${link}</a>`,
+  html:`Hello ${sourceemail},<br>Your parcelid ${id} is assigned to ${deliveryemail} and contact his mobilenumber:${deliveryguymobilenumber} for urgent queries<br>
+  Please Click on the link to track path of your courrier .<br><a href="${link}">${link}</a>`
+}
+transporter.sendMail(sendnotificationtocustomer,async function (err) {
+  if (err) {
+    console.log("didnot send email to  customer");
+    res.status(500).send({ msg: err.message });
+  }
+  else{
+    newnotify={'email':sendnotificationtocustomer['to'],'notificationtext':sendnotificationtocustomer['html']}
+    const newnotification=new notification(newnotify)
+    console.log(newnotification)
+    await newnotification.save()
+  }
+});
+
+});
+// router.get('/sendnotificationtocustomer',async function(req,res){
+//   console.log('hiii')
+//   deliveryemail="venkat9989383223@gmail.com"
+//   const deliveryguydetails=await user.findOne({email:deliveryemail});
+//   deliveryguymobilenumber=deliveryguydetails['mobilenumber'];
+//   const parceldetails = await parcel.findOne({ id:'1' });
+//   id=parceldetails['id']
+//   sourceemail=parceldetails['email']
+//   //cost=parceldetails['cost']
+//   // const paymentdetails=await payment.findOne({id:id});
+//   // ispaid=paymentdetails['ispaid']
+//   const link = `http://${process.env.ipadress}:${process.env.port}`
+ 
 // const sendnotificationtocustomer = {
 //   to: sourceemail,
 //   from: 'tunuguntlaooha1234@gmail.com',
@@ -306,39 +358,7 @@ else{
 
  
 
-});
-router.get('/sendnotificationtocustomer',async function(req,res){
-  console.log('hiii')
-  deliveryemail="venkat9989383223@gmail.com"
-  const deliveryguydetails=await user.findOne({email:deliveryemail});
-  deliveryguymobilenumber=deliveryguydetails['mobilenumber'];
-  const parceldetails = await parcel.findOne({ id:'1' });
-  id=parceldetails['id']
-  sourceemail=parceldetails['email']
-  //cost=parceldetails['cost']
-  // const paymentdetails=await payment.findOne({id:id});
-  // ispaid=paymentdetails['ispaid']
-  const link = `http://${process.env.ipadress}:${process.env.port}`
- 
-const sendnotificationtocustomer = {
-  to: sourceemail,
-  from: 'tunuguntlaooha1234@gmail.com',
-  subject: 'Cachy_courrier parcel',
-  //html: `Hello,<br> Please Click on the link to verify your email.<br><a href="${link}">${link}</a>`,
-  html:`Hello ${sourceemail},<br>Your parcelid ${id} is assigned to ${deliveryemail} and contact his mobilenumber:${deliveryguymobilenumber} for urgent queries<br>
-  Please Click on the link to track path of your courrier .<br><a href="${link}">${link}</a>`
-}
-transporter.sendMail(sendnotificationtocustomer, function (err) {
-  if (err) {
-    console.log("didnot send email to  customer");
-    res.status(500).send({ msg: err.message });
-  }
-});
-
-
- 
-
-})
+// })
 
 module.exports = function (passport) {
 

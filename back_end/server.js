@@ -14,6 +14,7 @@ const bodyparser=require("body-parser");
 const mongoose=require("mongoose");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var notificationsRouter=require('./routes/notification');
 var authRouter = require('./routes/auth');
 
 const dotenv = require("dotenv");
@@ -54,10 +55,9 @@ app.use(session({
   app.use(passport.session());
   app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/notifications',notificationsRouter);
 /** Pass configured passport to auth router */
 app.use('/auth', authRouter(passport));
-
 
 const port = process.env.PORT || 5000;
 

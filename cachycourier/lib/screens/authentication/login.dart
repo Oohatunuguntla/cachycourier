@@ -275,7 +275,7 @@ class _LoginPageState extends State<Login> {
       var jsonResponse = convert.jsonDecode(resp.body);
       print('$jsonResponse');
       print("success");
-      //  Navigator.of(context).pushNamed('/signup');
+      Navigator.of(context).pushNamed('/userpage');
     }
     else{
       print(resp.statusCode);

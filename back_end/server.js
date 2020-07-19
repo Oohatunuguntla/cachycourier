@@ -15,6 +15,7 @@ const mongoose=require("mongoose");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var notificationsRouter=require('./routes/notification');
+var statistcsRouter=require('./routes/statistics')
 var authRouter = require('./routes/auth');
 
 const dotenv = require("dotenv");
@@ -56,6 +57,7 @@ app.use(session({
   app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/notifications',notificationsRouter);
+app.use('/statistics',statistcsRouter)
 /** Pass configured passport to auth router */
 app.use('/auth', authRouter(passport));
 

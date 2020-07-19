@@ -11,13 +11,13 @@ router.get('/', async (req, res, next) => {
   var decoded=decodeURIComponent(req.url)
   console.log(decoded)
   //List parts = req.url.Split(new char[] {'?','&'});
-  email='oohas1234@gmail.com'
+  email='tunuguntlaooha1234@gmail.com'
   notification.find({ email: email })
     .exec()
     .then(
-      notifications=>{
-      console.log(notifications);
-      res.status(200).send({ notification: notifications });
+      notificationss=>{
+      console.log(notificationss);
+      res.status(200).send({ notification: notificationss });
       })
 
 });

@@ -74,6 +74,19 @@ class _UserPageState extends State<User> {
                         },
                         color: Colors.pink,
                       )),
+                       Container(
+                      width: 200,
+                      margin: EdgeInsets.only(top: 20, bottom: 0.0),
+                      child: RaisedButton(
+                        child: Text(
+                          'statistics',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          _statistics();
+                        },
+                        color: Colors.pink,
+                      )),
                   
           ],
         ),
@@ -81,10 +94,38 @@ class _UserPageState extends State<User> {
       ),
       );
   }
-  
+  void _statistics() async{
+    print('statistics');
+    Map<String, String> queryParameters={'email':'tunuguntlaooha1234@gmail.com'};
+    try{
+      print(DotEnv().env['ipadress']);
+      var url=DotEnv().env['ipadress']+":"+DotEnv().env['port'];
+      print(url);
+     
+      var uri =Uri.http(url,'statistics', queryParameters);
+      var resp = await http.get(uri);
+      if (resp.statusCode == 200) {
+        print("success");
+        var jsonResponse = convert.jsonDecode(resp.body);
+        print('statistics of user');
+        print('$jsonResponse');
+     // Navigator.of(context).pushNamed('/userpage');
+    }
+    else{
+      print(resp.statusCode);
+      print("fail");
+     // Navigator.of(context).pushNamed('/loginpage');
+    }
+    }
+    catch (error) {
+        print('error: $error');
+        _showAlertDialog('Error', error.toString());
+        
+      }
+  }
   void _notifications() async {
     print('notifications');
-    Map<String, String> queryParameters={'email':'oohas1234@gmail.com'};
+    Map<String, String> queryParameters={'email':'tunuguntlaooha1234@gmail.com'};
     print('helloo');
     try{
        print(DotEnv().env['ipadress']);

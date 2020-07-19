@@ -100,7 +100,7 @@ class _UserPageState extends State<User> {
       print("success");
       var jsonResponse = convert.jsonDecode(resp.body);
       print('notifications of user');
-      print('$jsonResponse');
+     print('$jsonResponse');
      // Navigator.of(context).pushNamed('/userpage');
     }
     else{

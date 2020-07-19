@@ -11,7 +11,7 @@ const userschema=mongoose.Schema({
     },
     name:{
         type:String,
-        required:true
+        
     },
     password:{
         type:String,
@@ -22,20 +22,20 @@ const userschema=mongoose.Schema({
     
     type:{
         type:String,
-        required:true
+        
 
     },
    city:{
         type:String,
-        required:true
+        
    },
    pin:{
         type:Number,
-        required:true
+        
    },
    mobilenumber:{
         type:String,
-        required:true
+        
    },
 
     resetPasswordToken:{

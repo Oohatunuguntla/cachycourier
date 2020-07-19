@@ -8,7 +8,7 @@ const parcel=require('../models/parcel');
 const payment=require('../models/payment');
 const notification=require('../models/notification');
 var nodemailer = require('nodemailer');
-var transporter = nodemailer.createTransport({ service: "gmail", auth: { user: 'tunuguntlaooha1234@gmail.com', pass: '9840290558' } });
+var transporter = nodemailer.createTransport({ service: "gmail", auth: { user: 'oohas1234@gmail.com', pass: '9840290558' } });
 router.get('/login', function (req, res) {
   const data = {};
 
@@ -17,7 +17,13 @@ router.get('/login', function (req, res) {
   
   res.render('../views/login', data);
 });
-
+router.post('/parcel',(req,res)=>{
+  const newparcel = parcel(body)
+  
+  
+  newparcel.save()
+  res.status(200).json({msg:"saved"});
+})
 router.get('/signup', function (req, res) {
   const data = {};
 
@@ -52,7 +58,7 @@ router.post('/signup', async function (req, res, next) {
      */
     const salt = await bcrypt.genSalt(10);
     body.password = await bcrypt.hash(body.password, salt);
-
+    console.log(body.password)
     try {
       const newUser = new user(body);
       await newUser.save();
@@ -66,15 +72,16 @@ router.post('/signup', async function (req, res, next) {
       const link = `http://${process.env.ipadress}:${process.env.port}/auth/verify/${body.email}`
         const resetEmail = {
           to: body.email,
-          from: 'tunuguntlaooha1234@gmail.com',
+          from: 'oohas1234@gmail.com',
           subject: 'Cachy_courrier email verification',
           html: `Hello,<br> Please Click on the link to verify your email.<br><a href="${link}">${link}</a>`,
         }
 
-
+        console.log('80')
         transporter.sendMail(resetEmail, function (err) {
           if (err) {
-            console.log("bass");
+            console.log("bass11");
+            console.log(err.message)
             res.status(500).send({ msg: err.message });
           }
         });

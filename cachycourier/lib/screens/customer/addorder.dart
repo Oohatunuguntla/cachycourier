@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import './home.dart';
+import './timer.dart';
+import './progressBar.dart';
+import './avatarAndText.dart';
+import './util.dart';
 
 class addOrderPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Forms',
       theme: ThemeData(
         primarySwatch: Colors.pink,
@@ -28,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 }
 class _MyHomePageState extends State<MyHomePage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final emailField = TextField(
@@ -145,20 +148,12 @@ class MyCustomForm extends StatefulWidget {
 }
 class MyCustomFormState extends State<MyCustomForm> {
 
-   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   String radioItem = '';
   bool _value1 = false;
   bool _value2 = false;
-  String _name;
-  String _address;
-  String _destinationaddress;
-  String _timetopick;
-  String _aboutcourier;
-  String _value;
-  String _weight;
-  String _promocode;
 
   void _onChanged1(bool value) => setState(() => _value1 = value);
 
@@ -166,43 +161,47 @@ class MyCustomFormState extends State<MyCustomForm> {
 
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
-    return Form(
+    return ListView(
       key: _formKey,
-      child:ListView(
 
       children: <Widget>[
-        
-          
         TextFormField(
           decoration: const InputDecoration(
-            icon: const Icon(Icons.home),
-            hintText: 'Enter the Address',
-            labelText: 'sourceAddress',
+            icon: const Icon(Icons.person),
+            hintText: 'Enter your full name',
+            labelText: 'Name',
           ),
           validator: (value) {
             if (value.isEmpty) {
-              return 'Please enter valid address';
+              return 'Please enter some text';
             }
             return null;
-          },
-          onSaved: (value) {
-            _address = value;
           },
         ),
         TextFormField(
           decoration: const InputDecoration(
             icon: const Icon(Icons.home),
             hintText: 'Enter the Address',
-            labelText: 'destinationAddress',
+            labelText: 'Address',
           ),
           validator: (value) {
             if (value.isEmpty) {
-              return 'Please enter valid address';
+              return 'Please enter valid phone number';
             }
             return null;
           },
-          onSaved: (value) {
-            _destinationaddress = value;
+        ),
+        TextFormField(
+          decoration: const InputDecoration(
+            icon: const Icon(Icons.phone),
+            hintText: 'Enter phone number',
+            labelText: 'Phone number',
+          ),
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Please enter valid date';
+            }
+            return null;
           },
         ),
         TextFormField(
@@ -217,9 +216,6 @@ class MyCustomFormState extends State<MyCustomForm> {
             }
             return null;
           },
-          onSaved: (value) {
-            _timetopick = value;
-          },
         ),
         TextFormField(
           decoration: const InputDecoration(
@@ -227,8 +223,11 @@ class MyCustomFormState extends State<MyCustomForm> {
             hintText: 'What are you sending?',
             labelText: 'What are you sending?',
           ),
-          onSaved: (value) {
-            _aboutcourier = value;
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Please enter valid date';
+            }
+            return null;
           },
         ),
         TextFormField(
@@ -243,9 +242,6 @@ class MyCustomFormState extends State<MyCustomForm> {
             }
             return null;
           },
-          onSaved: (value) {
-            _value = value;
-          },
         ),
         RadioListTile(
           groupValue: radioItem,
@@ -254,7 +250,6 @@ class MyCustomFormState extends State<MyCustomForm> {
           onChanged: (val) {
             setState(() {
               radioItem = val;
-              _weight = val;
             });
           },
         ),
@@ -265,7 +260,6 @@ class MyCustomFormState extends State<MyCustomForm> {
           onChanged: (val) {
             setState(() {
               radioItem = val;
-              _weight = val;
             });
           },
         ),
@@ -276,7 +270,6 @@ class MyCustomFormState extends State<MyCustomForm> {
           onChanged: (val) {
             setState(() {
               radioItem = val;
-              _weight = val;
             });
           },
         ),
@@ -287,11 +280,10 @@ class MyCustomFormState extends State<MyCustomForm> {
           onChanged: (val) {
             setState(() {
               radioItem = val;
-              _weight = val;
             });
           },
         ),
-        
+
         Text('Selected:  $radioItem', style: TextStyle(fontSize: 23),),
 
 
@@ -307,11 +299,21 @@ class MyCustomFormState extends State<MyCustomForm> {
             }
             return null;
           },
-          onSaved: (value) {
-            _promocode = value;
-          },
         ),
 
+
+        new SwitchListTile(
+          value: _value2,
+          onChanged: _onChanged2,
+          title: new Text('Notify me by SMS', style: new TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pink)),
+        ),
+        new SwitchListTile(
+          value: _value2,
+          onChanged: _onChanged2,
+          title: new Text('Notify recipients by SMS', style: new TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pink)),
+        ),
 
 
         new Container(
@@ -325,72 +327,17 @@ class MyCustomFormState extends State<MyCustomForm> {
               child: const Text('Create Order'),
 
               onPressed: () {
-                _validateAndSubmit();
                 // It returns true if the form is valid, otherwise returns false
-                //Route route = MaterialPageRoute(builder: (context) => ConfirmOrderPage());
-                //Navigator.push(context, route);
+                Route route = MaterialPageRoute(builder: (context) => ConfirmOrderPage());
+                Navigator.push(context, route);
               },
             )),
 
       ],
-      )
+
     );
-  }
-    bool _validateAndSave() {
-    final FormState form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      // print('firstname: $_firstName, lastname: $_lastName, gender: $_gender, email: $_email,dob: $_dob,password: $_password');
-      return true;
-    }
-    return false;
-  }
-
-  void _validateAndSubmit() async {
-    if (_validateAndSave()) {
-      debugPrint('Validated the form');
-      
-      try {
-        print(DotEnv().env['ipadress']);
-         var url="http://"+DotEnv().env['ipadress']+":"+DotEnv().env['port']+"/auth/parcel";
-         print(url);
-      print(_name);
-    http.Response resp = await http.post(url,body: {'sourceaddress': _address,'destinationaddress': _destinationaddress,'timetopick':_timetopick,'parceltype': _aboutcourier,'cost': _value,'weight': _weight,'promocode': _promocode});  // 10.0.2.2 for emulator
-    if (resp.statusCode == 200) {
-      print("ghjkl");
-      var jsonResponse = convert.jsonDecode(resp.body);
-      print('$jsonResponse');
-      print("success");
-       _showAlertDialog('saved','saved succesfully');
-      //  Navigator.of(context).pushNamed('/signup');
-    }
-    else{
-      print(resp.statusCode);
-      print("fail");
-      Navigator.of(context).pushNamed('/loginpage');
-    }
-      } catch (error) {
-        print('error: $error');
-        _showAlertDialog('Error', error.toString());
-        
-      }
-    }
-  }
-
-
-  void _showAlertDialog(String title, String message) {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text(title),
-      content: Text(message),
-    );
-    showDialog(
-        context: context,
-        builder: (_) {
-          return alertDialog;
-        });
   }
 }
-
 
 class ConfirmOrderPage extends StatelessWidget{
   static final String path = "lib/src/pages/ecommerce/confirm_order1.dart";
@@ -508,13 +455,127 @@ class ConfirmOrderPage extends StatelessWidget{
             width: double.infinity,
             child: RaisedButton(
               color: Theme.of(context).primaryColor,
-              onPressed: ()=> {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Order()),
+                );
+              },
               child: Text("Confirm Order", style: TextStyle(
                   color: Colors.white
               ),),
             ),
           )
         ],
+      ),
+    );
+  }
+
+
+
+}
+
+class Order extends StatefulWidget {
+  @override
+  _OrderState createState() => _OrderState();
+}
+
+class _OrderState extends State<Order> with TickerProviderStateMixin {
+  // final timerDuration = Duration(milliseconds: 2500);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.chevron_left,
+            color: Colors.black,
+            size: 40,
+          ),
+          onPressed: () {},
+        ),
+        actions: <Widget>[
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Text(
+                'CANCEL',
+                style: TextStyle(color: Colors.black, fontSize: 12),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 50),
+              child: Text(
+                'Order#568',
+                style:
+                TextStyle(color: Color.fromRGBO(0, 0, 0, 0.2), fontSize: 12),
+              ),
+            ),
+            Timer(),
+            ProgressBar(),
+            SizedBox(height: 50),
+            AvatarAndText(),
+            SizedBox(height: 50),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              child: OutlineButton(
+                borderSide: BorderSide(width: 1.0, color: FoodColors.Blue),
+                color: FoodColors.Blue,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(width: 50),
+                      Text(
+                        'Go to Homepage',
+                        style: TextStyle(fontSize: 15, color: FoodColors.Blue),
+                      ),
+                      SizedBox(width: 50),
+                      Image.asset(
+                        'assets/images/icon_direction.png',
+                        scale: 2,
+                      )
+                    ],
+                  ),
+                ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                    );
+                  },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

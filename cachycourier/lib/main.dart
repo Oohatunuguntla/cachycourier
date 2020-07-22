@@ -3,8 +3,10 @@ import 'package:cachycourier/screens/authentication/signup.dart';
 import 'package:cachycourier/screens/authentication/login.dart';
 import 'package:cachycourier/screens/authentication/reset.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:cachycourier/screens/User.dart';
-import 'package:cachycourier/screens/addorder.dart';
+import 'package:cachycourier/screens/customer/Home.dart';
+import 'package:cachycourier/screens/customer/Usernew.dart';
+import 'package:cachycourier/screens/customer/addorder.dart';
+import 'package:cachycourier/screens/customer/Notifications.dart';
 
 void main(){
   runApp(Cachycourier());
@@ -23,8 +25,10 @@ class Cachycourier extends StatelessWidget{
         '/signuppage':(BuildContext context)=>Signup(),
         '/loginpage':(BuildContext context)=>Login(),
         '/resetpage':(BuildContext context)=>ResetPassword(),
-        '/userpage':(BuildContext context)=>User(),
-        '/addorderpage':(BuildContext context)=>addOrderPage()
+        '/userpage':(BuildContext context)=>Usernew(),
+        '/addorderpage':(BuildContext context)=>addOrderPage(),
+        '/homepagecustomer':(BuildContext context)=>Homepagecustomer(),
+        '/notificationpage':(BuildContext)=>NotificationsPage()
       },
       home: HomePage(),
     );

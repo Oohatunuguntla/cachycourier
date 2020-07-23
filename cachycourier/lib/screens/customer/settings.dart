@@ -1,191 +1,249 @@
 import 'package:flutter/material.dart';
 
-
-class SettingsOnePage extends StatefulWidget {
-  static final String path = "lib/src/pages/settings/settings1.dart";
-
-  @override
-  _SettingsOnePageState createState() => _SettingsOnePageState();
+class StatsScreen extends StatefulWidget {
+  _StatsScreenState createState() => _StatsScreenState();
 }
 
-class _SettingsOnePageState extends State<SettingsOnePage> {
-  bool _dark;
-
-  @override
-  void initState() {
-    super.initState();
-    _dark = false;
-  }
-
-  Brightness _getBrightness() {
-    return _dark ? Brightness.dark : Brightness.light;
-  }
-
+class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      isMaterialAppTheme: true,
-      data: ThemeData(
-        brightness: _getBrightness(),
-      ),
-      child: Scaffold(
-        backgroundColor: _dark ? null : Colors.grey.shade200,
-        appBar: AppBar(
-          elevation: 0,
-          brightness: _getBrightness(),
-          iconTheme: IconThemeData(color: _dark ? Colors.white : Colors.black),
-          backgroundColor: Colors.transparent,
-          title: Text(
-            'Profile settings',
-            style: TextStyle(color: _dark ? Colors.white : Colors.black),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.account_circle),
-              onPressed: () {
-                setState(() {
-                  _dark = !_dark;
-                });
-              },
-            )
-          ],
-        ),
-        body: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      body: ListView(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Stack(
                 children: <Widget>[
-                  Card(
-                    elevation: 8.0,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    color: Colors.pink,
-                    child: ListTile(
-                      onTap: () {
-                        //open edit profile
-                      },
-                      title: Text(
-                        "SAISREENITHYA",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-
-                      trailing: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Card(
-                    elevation: 4.0,
-                    margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Column(
-                      children: <Widget>[
-                        ListTile(
-                          leading: Icon(
-                            Icons.lock_outline,
-                            color: Colors.pink,
-                          ),
-                          title: Text("Change Password"),
-                          trailing: Icon(Icons.keyboard_arrow_right),
-                          onTap: () {
-                            //open change password
-                          },
-                        ),
-                        _buildDivider(),
-                        ListTile(
-                          leading: Icon(
-                            Icons.language,
-                            color: Colors.pink,
-                          ),
-                          title: Text("Change Language"),
-                          trailing: Icon(Icons.keyboard_arrow_right),
-                          onTap: () {
-                            //open change language
-                          },
-                        ),
-                        _buildDivider(),
-                        ListTile(
-                          leading: Icon(
-                            Icons.location_on,
-                            color: Colors.pink,
-                          ),
-                          title: Text("Change Location"),
-                          trailing: Icon(Icons.keyboard_arrow_right),
-                          onTap: () {
-                            //open change location
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Text(
-                    "Notification Settings",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.pink,
-                    ),
-                  ),
-                  SwitchListTile(
-                    activeColor: Colors.pink,
-                    contentPadding: const EdgeInsets.all(0),
-                    value: true,
-                    title: Text("Received notification"),
-                    onChanged: (val) {},
-                  ),
-                  SwitchListTile(
-                    activeColor: Colors.pink,
-                    contentPadding: const EdgeInsets.all(0),
-                    value: false,
-                    title: Text("Received newsletter"),
-                    onChanged: null,
-                  ),
-                  SwitchListTile(
-                    activeColor: Colors.pink,
-                    contentPadding: const EdgeInsets.all(0),
-                    value: true,
-                    title: Text("Received Offer Notification"),
-                    onChanged: (val) {},
-                  ),
-                  SwitchListTile(
-                    activeColor: Colors.pink,
-                    contentPadding: const EdgeInsets.all(0),
-                    value: true,
-                    title: Text("Received App Updates"),
-                    onChanged: null,
+                  Container(
+                    height: 200.0,
+                    width: double.infinity,
+                    color: Colors.grey[400],
                   ),
 
-                  const SizedBox(height: 60.0),
+
+                  Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Container(
+                            width: 75.0,
+                            height: 75.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: Colors.white,
+                                  style: BorderStyle.solid,
+                                  width: 2.0),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('Pino',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Quicksand',
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.bold)),
+                              Text('176***590',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Quicksand',
+                                      fontSize: 20.0))
+                            ],
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 230.0,
+                          ),
+
+                        ],
+                      ),
+                      SizedBox(
+                        height: 25.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              Icon(Icons.perm_contact_calendar,
+                                  color: Colors.black, size: 35.0),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text('Favorites',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Quicksand',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0))
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Icon(Icons.account_balance_wallet,
+                                  color: Colors.black, size: 35.0),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text('Wallet',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Quicksand',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0))
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Icon(Icons.print,
+                                  color: Colors.black, size: 35.0),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text('Footprint',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Quicksand',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0))
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Icon(Icons.laptop,
+                                  color: Colors.black, size: 35.0),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              Text('Coupon',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Quicksand',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0))
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      Column(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              customCards(
+                                  'Pending payment', '5', 'assets/card.png'),
+                              customCards(
+                                  'To be shipped', '2', 'assets/box.png'),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5.0,
+                          )
+                        ],
+                      )
+                    ],
+                  )
                 ],
               ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  customCards('To be received', '8', 'assets/trucks.png'),
+                  customCards('Return/replace', '0', 'assets/returnbox.png'),
+                ],
+              ),
+              SizedBox(height: 10.0,),
+              customlistDetails('Gift card', Icons.account_box, Colors.red[100], Colors.red[400]),
+              customlistDetails('Bank card', Icons.credit_card, Colors.orange[200], Colors.orange[400]),
+
+              customlistDetails('Consulting collection', Icons.dashboard, Colors.blue[100], Colors.blue[400]),
+              customlistDetails('Customer service', Icons.people, Colors.orange[100], Colors.orange[300])
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget customCards(String title, String qty, String imagePath) {
+    return Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(8.0),
+      child: Container(
+        height: 125.0,
+        width: (MediaQuery.of(context).size.width / 2.0) - 20.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: 10.0,
             ),
-
-
+            Padding(
+              padding: EdgeInsets.only(left: 15.0),
+              child: Image.asset(imagePath,
+                  fit: BoxFit.cover, width: 50.0, height: 50.0),
+            ),
+            SizedBox(height: 2.0),
+            Padding(
+              padding: EdgeInsets.only(left: 15.0),
+              child: Text(title,
+                  style: TextStyle(
+                    fontFamily: 'Quicksand',
+                    fontSize: 15.0,
+                    color: Colors.black,
+                  )),
+            ),
+            SizedBox(height: 3.0),
+            Padding(
+              padding: EdgeInsets.only(left: 15.0),
+              child: Text(qty,
+                  style: TextStyle(
+                      fontFamily: 'Quicksand',
+                      fontSize: 15.0,
+                      color: Colors.pink,
+                      fontWeight: FontWeight.bold)),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Container _buildDivider() {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 8.0,
+  Widget customlistDetails(String title, IconData icon, Color backgroundColor, Color iconColor) {
+    return ListTile(
+      title: Text(
+          title,
+          style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Quicksand',
+              fontSize: 18.0
+          )
       ),
-      width: double.infinity,
-      height: 1.0,
-      color: Colors.grey.shade400,
+      leading: CircleAvatar(
+        backgroundColor: backgroundColor,
+        child: Center(
+          child: Icon(icon, color: iconColor,),
+        ),
+      ),
+      trailing: Icon(Icons.chevron_right, color: Colors.black),
     );
-
   }
+
 }

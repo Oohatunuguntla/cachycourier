@@ -16,7 +16,9 @@ class _LoginPageState extends State<Login> {
   String _email;
   String _password;
   @override
+  
   Widget build(BuildContext context) {
+    
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
@@ -66,6 +68,7 @@ class _LoginPageState extends State<Login> {
   }
 
   Widget _getBody() {
+    
       return Form(
         key: _formKey,
         child: ListView(
@@ -276,7 +279,18 @@ class _LoginPageState extends State<Login> {
       var jsonResponse = convert.jsonDecode(resp.body);
       print('$jsonResponse');
       print("success");
-      Navigator.of(context).pushNamed('/userpage');
+      print(jsonResponse['currentuser']);
+      
+      Navigator.of(context).pushNamed('/userpage',
+      arguments :{'id':jsonResponse['currentuser'].toString()});
+    //   Navigator.pushNamed(
+    //   context,
+    //   ExtractArgumentsScreen.routeName,
+    //   arguments: ScreenArguments(
+    //     'Extract Arguments Screen',
+    //     'This message is extracted in the build method.',
+    //   ),
+    // );
     }
     else{
       print(resp.statusCode);

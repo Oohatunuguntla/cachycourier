@@ -15,20 +15,23 @@ class Cachycourier extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     DotEnv().load('.env');
-    return MaterialApp(
-      // title: 'Cachycourier',
-      // debugShowCheckedModeBanner: false,
-      // theme:ThemeData(
-      //   primarySwatch:Colors.pink
-      // ),
-      routes:<String,WidgetBuilder>{
-        '/signuppage':(BuildContext context)=>Signup(),
-        '/loginpage':(BuildContext context)=>Login(),
-        '/resetpage':(BuildContext context)=>ResetPassword(),
-        '/userpage':(BuildContext context)=>Usernew(),
-        '/addorderpage':(BuildContext context)=>addOrderPage(),
+    String id;
+        return MaterialApp(
+          // title: 'Cachycourier',
+          // debugShowCheckedModeBanner: false,
+          // theme:ThemeData(
+          //   primarySwatch:Colors.pink
+          // ),
+          
+          routes:<String,WidgetBuilder>{
+            '/signuppage':(BuildContext context)=>Signup(),
+            '/loginpage':(BuildContext context)=>Login(),
+            '/resetpage':(BuildContext context)=>ResetPassword(),
+            '/userpage':(BuildContext context)=>Usernew(),
+            '/addorderpage':(BuildContext context)=>addOrderPage(id),
+            //'/addorderpage':(BuildContext context)=>addOrderPage(),
         '/homepagecustomer':(BuildContext context)=>Homepagecustomer(),
-        '/notificationpage':(BuildContext)=>NotificationsPage()
+        '/notificationpage':(BuildContext context)=>NotificationsPage()
       },
       home: HomePage(),
     );

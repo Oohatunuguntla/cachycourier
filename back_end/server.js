@@ -17,6 +17,7 @@ var usersRouter = require('./routes/users');
 var notificationsRouter=require('./routes/notification');
 var statistcsRouter=require('./routes/statistics')
 var authRouter = require('./routes/auth');
+var addorderRouter=require('./routes/addorder');
 
 const dotenv = require("dotenv");
 dotenv.config()
@@ -58,8 +59,10 @@ app.use(session({
 app.use('/users', usersRouter);
 app.use('/notifications',notificationsRouter);
 app.use('/statistics',statistcsRouter)
+app.use('/addorder',addorderRouter);
 /** Pass configured passport to auth router */
 app.use('/auth', authRouter(passport));
+
 
 const port = process.env.PORT || 5000;
 

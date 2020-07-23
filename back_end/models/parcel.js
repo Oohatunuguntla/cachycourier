@@ -1,21 +1,14 @@
 const mongoose=require('mongoose')
 const parcelschema=mongoose.Schema({
-    id:{
+    sourceid:{
         type:String,
-        unique:true,
-
-    },
-    email:{
-        type:String,
-        match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
-
     },
     timetopick:{
         type:String,
        
     },
     weight:{
-        type:Number,
+        type:String,
         
     },
     sourceaddress:{
@@ -30,15 +23,11 @@ const parcelschema=mongoose.Schema({
         type:String,
         
     },
-    pool:{
-        type:Boolean,
-        
-    },
-    reached:{
-       
+    status:{
+        type:String,
     },
     cost:{
-        type:Number,
+        type:String,
        
     },
     promocode:{

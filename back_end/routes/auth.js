@@ -374,7 +374,9 @@ module.exports = function (passport) {
     function(req,res){
 
         console.log("success")
-        res.status(200).json({msg:'success'});
+        console.log(req.user)
+        res.status(200).json({msg:'success',currentuser:req.user});
+
     
     }
     

@@ -4,36 +4,61 @@ import './timer.dart';
 import './progressBar.dart';
 import './avatarAndText.dart';
 import './util.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/services.dart';
 
 class addOrderPage extends StatelessWidget{
+  final String id;
+  addOrderPage(this.id);
+  
+  
   @override
   Widget build(BuildContext context) {
+    print('asd');
+    print(id);
+    // addOrderPage({Key key, this.id}) : super(key: key);
+    // final String id;
+    // addOrderPage(this.id);
+    // return MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   title: id,
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Forms',
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
+    //   theme: ThemeData(
+    //     primarySwatch: Colors.pink,
 
-      ),
-      home: MyHomePage(title: 'Flutter Forms'),
-    );
+    //   ),
+    //   home: MyHomePage(title: id),
+    // );
+    return MyHomePage(id);
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  // MyHomePage({Key key, this.title}) : super(key: key);
 
-  final String title;
-
+  // final String title;
+    final String id;
+    MyHomePage(this.id);
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+
+  // _MyHomePageState createState() => _MyHomePageState();
+  State<StatefulWidget> createState() {
+  return  _MyHomePageState(id);
+  }
 }
 class _MyHomePageState extends State<MyHomePage> {
+
+     final String id;
+    _MyHomePageState(this.id);
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
   Widget build(BuildContext context) {
+      print('add');
+      print(id);
     final emailField = TextField(
       obscureText: false,
       style: style,
@@ -60,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          Route route = MaterialPageRoute(builder: (context) => bookcourier());
+          Route route = MaterialPageRoute(builder: (context) => bookcourier(id));
           Navigator.push(context, route);
         },
         child: Text("Book a Courier",
@@ -77,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          Route route = MaterialPageRoute(builder: (context) => bookcourier1());
+          Route route = MaterialPageRoute(builder: (context) => bookcourier1(id));
           Navigator.push(context, route);
         },
         child: Text("Hyperlocal",
@@ -118,92 +143,103 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 class bookcourier extends StatelessWidget {
+  
+     final String id;
+    bookcourier(this.id);
   @override
+ 
   Widget build(BuildContext context) {
+    
     return Scaffold(
 
 
       body:
-      MyCustomForm(),
+      MyCustomForm(id),
     );
   }
 }
 class bookcourier1 extends StatelessWidget {
+     final String id;
+    bookcourier1(this.id);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 
       body:
-      MyCustomForm(),
+      MyCustomForm(id),
     );
   }
 }
 
 
 class MyCustomForm extends StatefulWidget {
+     final String id;
+    MyCustomForm(this.id);
   @override
   MyCustomFormState createState() {
-    return MyCustomFormState();
+    return MyCustomFormState(id);
   }
 }
 class MyCustomFormState extends State<MyCustomForm> {
-
+  final String id;
+  MyCustomFormState(this.id);
   final _formKey = GlobalKey<FormState>();
 
   @override
   String radioItem = '';
   bool _value1 = false;
   bool _value2 = false;
-
+  String timetopick;
+  String weight;
+  String sourceaddress;
+  String destinationaddress;
+  String parceltype;
+  String status;
+  String promocode;
   void _onChanged1(bool value) => setState(() => _value1 = value);
 
   void _onChanged2(bool value) => setState(() => _value2 = value);
 
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
-    return ListView(
+    return Form(
       key: _formKey,
-
+        child: ListView(
       children: <Widget>[
+
         TextFormField(
           decoration: const InputDecoration(
-            icon: const Icon(Icons.person),
-            hintText: 'Enter your full name',
-            labelText: 'Name',
+            icon: const Icon(Icons.home),
+            hintText: 'Enter the source Address',
+            labelText: 'sourceAddress',
           ),
           validator: (value) {
             if (value.isEmpty) {
-              return 'Please enter some text';
+              return 'Please enter valid address';
             }
             return null;
+          },
+            onSaved: (value) {
+                        sourceaddress = value;
           },
         ),
         TextFormField(
           decoration: const InputDecoration(
             icon: const Icon(Icons.home),
-            hintText: 'Enter the Address',
-            labelText: 'Address',
+            hintText: 'Enter the destination Address',
+            labelText: 'destinationAddress',
           ),
           validator: (value) {
             if (value.isEmpty) {
-              return 'Please enter valid phone number';
+              return 'Please enter valid address';
             }
             return null;
           },
+            onSaved: (value) {
+                        destinationaddress = value;
+                      },
         ),
-        TextFormField(
-          decoration: const InputDecoration(
-            icon: const Icon(Icons.phone),
-            hintText: 'Enter phone number',
-            labelText: 'Phone number',
-          ),
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter valid date';
-            }
-            return null;
-          },
-        ),
+        
         TextFormField(
           decoration: const InputDecoration(
             icon: const Icon(Icons.timer),
@@ -212,10 +248,13 @@ class MyCustomFormState extends State<MyCustomForm> {
           ),
           validator: (value) {
             if (value.isEmpty) {
-              return 'Please enter valid date';
+              return 'Please enter valid time';
             }
             return null;
           },
+            onSaved: (value) {
+                        timetopick = value;
+                      },
         ),
         TextFormField(
           decoration: const InputDecoration(
@@ -229,20 +268,11 @@ class MyCustomFormState extends State<MyCustomForm> {
             }
             return null;
           },
+            onSaved: (value) {
+                        parceltype = value;
+                      },
         ),
-        TextFormField(
-          decoration: const InputDecoration(
-            icon: const Icon(Icons.attach_money),
-            hintText: 'Value of package?',
-            labelText: 'Value',
-          ),
-          validator: (value) {
-            if (value.isEmpty) {
-              return 'Please enter valid date';
-            }
-            return null;
-          },
-        ),
+
         RadioListTile(
           groupValue: radioItem,
           title: Text('Upto 5 kg'),
@@ -299,21 +329,24 @@ class MyCustomFormState extends State<MyCustomForm> {
             }
             return null;
           },
+            onSaved: (value) {
+                        promocode = value;
+                      },
         ),
 
 
-        new SwitchListTile(
-          value: _value2,
-          onChanged: _onChanged2,
-          title: new Text('Notify me by SMS', style: new TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pink)),
-        ),
-        new SwitchListTile(
-          value: _value2,
-          onChanged: _onChanged2,
-          title: new Text('Notify recipients by SMS', style: new TextStyle(
-              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pink)),
-        ),
+        // new SwitchListTile(
+        //   value: _value2,
+        //   onChanged: _onChanged2,
+        //   title: new Text('Notify me by SMS', style: new TextStyle(
+        //       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pink)),
+        // ),
+        // new SwitchListTile(
+        //   value: _value2,
+        //   onChanged: _onChanged2,
+        //   title: new Text('Notify recipients by SMS', style: new TextStyle(
+        //       fontSize: 20, fontWeight: FontWeight.bold, color: Colors.pink)),
+        // ),
 
 
         new Container(
@@ -327,27 +360,74 @@ class MyCustomFormState extends State<MyCustomForm> {
               child: const Text('Create Order'),
 
               onPressed: () {
+                    final FormState form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      // print('firstname: $_firstName, lastname: $_lastName, gender: $_gender, email: $_email,dob: $_dob,password: $_password');
+    }
                 // It returns true if the form is valid, otherwise returns false
-                Route route = MaterialPageRoute(builder: (context) => ConfirmOrderPage());
+             print('crete ordre')     ;
+          print(id);
+          print(timetopick);
+          print(weight);
+          print(destinationaddress);
+          print(sourceaddress);
+          print(parceltype);
+          
+          print(promocode);
+                Route route = MaterialPageRoute(builder: (context) => ConfirmOrderPage(id,sourceaddress,destinationaddress,
+                                                                                      timetopick,parceltype,radioItem,promocode));
                 Navigator.push(context, route);
               },
             )),
 
       ],
-
+        )
     );
   }
 }
 
-class ConfirmOrderPage extends StatelessWidget{
+class ConfirmOrderPage extends StatefulWidget{
+  final String id,sourceaddress,destinationaddress,timetopick,parceltype,weight,promocode;
+  ConfirmOrderPage(this.id,this.sourceaddress,this.destinationaddress,this.timetopick,this.parceltype,this.weight,this.promocode);
+  @override
+  State<StatefulWidget> createState() {
+    return _ConfirmOrderPageState(id,sourceaddress,destinationaddress,timetopick,parceltype,weight,promocode);
+  }
+}
+class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
+  final String id,sourceaddress,destinationaddress,timetopick,parceltype,weight,promocode;
+  _ConfirmOrderPageState(this.id,this.sourceaddress,this.destinationaddress,this.timetopick,this.parceltype,this.weight,this.promocode);
   static final String path = "lib/src/pages/ecommerce/confirm_order1.dart";
-  final String address = "Chabahil, Kathmandu";
-  final String phone="9818522122";
-  final double total = 500;
+
+  String total;
   final double delivery = 100;
 
   @override
+  
   Widget build(BuildContext context) {
+
+      if (weight=='Upto 5kg'){
+          total = '500';
+      }
+      else if(weight=='Upto 10kg'){
+           total = '750';
+      }
+      else if(weight =='Upto 15kg'){
+        total = '1000';
+      }
+      else{
+        total = '1500';
+      }
+            
+          print(id);
+          print(timetopick);
+          print(weight);
+          print(destinationaddress);
+          print(sourceaddress);
+          print(parceltype);
+          print(total);
+          print(promocode);
     return Scaffold(
       body: _buildBody(context),
     );
@@ -365,22 +445,23 @@ class ConfirmOrderPage extends StatelessWidget{
               Text("Rs. $total"),
             ],
           ),
-          SizedBox(height: 10.0,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("Delivery fee"),
-              Text("Rs. $delivery"),
-            ],
-          ),
-          SizedBox(height: 10.0,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("Total", style: Theme.of(context).textTheme.title,),
-              Text("Rs. ${total+delivery}", style: Theme.of(context).textTheme.title),
-            ],
-          ),
+          // SizedBox(height: 10.0,),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     Text("Delivery fee"),
+          //     Text("Rs. $delivery"),
+          //   ],
+          // ),
+          // SizedBox(height: 10.0,),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: <Widget>[
+          //     Text("Total", style: Theme.of(context).textTheme.title,),
+          //     Text("Rs. ${total+delivery}", style: Theme.of(context).textTheme.title),
+          //   ],
+          // ),
+          
           SizedBox(height: 20.0,),
           Container(
               color: Colors.grey.shade200,
@@ -392,38 +473,38 @@ class ConfirmOrderPage extends StatelessWidget{
             children: <Widget>[
               RadioListTile(
                 selected: true,
-                value: address,
-                groupValue: address,
-                title: Text(address),
+                value: destinationaddress,
+                groupValue: destinationaddress,
+                title: Text('address'),
                 onChanged: (value){},
               ),
-              RadioListTile(
-                selected: false,
-                value: "New Address",
-                groupValue: address,
-                title: Text("Choose new delivery address"),
-                onChanged: (value){},
-              ),
-              Container(
-                  color: Colors.grey.shade200,
-                  padding: EdgeInsets.all(8.0),
-                  width: double.infinity,
-                  child: Text("Contact Number".toUpperCase())
-              ),
-              RadioListTile(
-                selected: true,
-                value: phone,
-                groupValue: phone,
-                title: Text(phone),
-                onChanged: (value){},
-              ),
-              RadioListTile(
-                selected: false,
-                value: "New Phone",
-                groupValue: phone,
-                title: Text("Choose new contact number"),
-                onChanged: (value){},
-              ),
+              // RadioListTile(
+              //   selected: false,
+              //   value: "New Address",
+              //   groupValue: address,
+              //   title: Text("Choose new delivery address"),
+              //   onChanged: (value){},
+              // ),
+              // Container(
+              //     color: Colors.grey.shade200,
+              //     padding: EdgeInsets.all(8.0),
+              //     width: double.infinity,
+              //     child: Text("Contact Number".toUpperCase())
+              // ),
+              // RadioListTile(
+              //   selected: true,
+              //   value: phone,
+              //   groupValue: phone,
+              //   title: Text(phone),
+              //   onChanged: (value){},
+              // ),
+              // RadioListTile(
+              //   selected: false,
+              //   value: "New Phone",
+              //   groupValue: phone,
+              //   title: Text("Choose new contact number"),
+              //   onChanged: (value){},
+              // ),
             ],
           ),
           SizedBox(height: 20.0,),
@@ -456,10 +537,8 @@ class ConfirmOrderPage extends StatelessWidget{
             child: RaisedButton(
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Order()),
-                );
+                _addorder(id,sourceaddress,destinationaddress,timetopick,parceltype,weight,total,promocode);
+             
               },
               child: Text("Confirm Order", style: TextStyle(
                   color: Colors.white
@@ -470,19 +549,100 @@ class ConfirmOrderPage extends StatelessWidget{
       ),
     );
   }
+   void _addorder(id,sourceaddress,destinationaddress,timetopick,parceltype,weight,total,promocode) async {
+    try {
+        print('addorderfun');
+        print(DotEnv().env['ipadress']);
+         var url="http://"+DotEnv().env['ipadress']+":"+DotEnv().env['port']+"/addorder";
+         print(url);
+          print(id);
+          print(timetopick);
+          print(weight);
+          print(destinationaddress);
+          print(sourceaddress);
+          print(parceltype);
+          print(total);
+          print(promocode);
+     http.Response resp = await http.post(url,body:{'sourceid':id,'timetopick':timetopick,'weight':weight,
+                                                    'sourceaddress':sourceaddress,'destinationaddress':destinationaddress,
+                                                    'parceltype':parceltype,'cost':total,'promocode':promocode});
+        
+      if (resp.statusCode == 200) {
+    
+      var jsonResponse = convert.jsonDecode(resp.body);
+      print('$jsonResponse');
+      print("success order");
+      Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Order(id)),
+                );
 
+    // //   Navigator.pushNamed(
+    // //   context,
+    // //   ExtractArgumentsScreen.routeName,
+    // //   arguments: ScreenArguments(
+    // //     'Extract Arguments Screen',
+    // //     'This message is extracted in the build method.',
+    // //   ),
+    // // );
+     }
+    else{
+      print(resp.statusCode);
+     print('fail');
+      
+    }  
+   }   
+   catch(error){
 
+         print('error: $error');
+        _showAlertDialog('Error', error.toString());      
+                         }                      // 10.0.2.2 for emulator
 
+    // if (resp.statusCode == 200) {
+    //   print("ghjkl");
+    //   var jsonResponse = convert.jsonDecode(resp.body);
+    //   print('$jsonResponse');
+    //   print("success");
+    //   print(jsonResponse['currentuser']);
+    //   Navigator.of(context).pushNamed('/userpage');
+    // }
+    // else{
+    //   print(resp.statusCode);
+    //   print("fail");
+    //   Navigator.of(context).pushNamed('/loginpage');
+    //   }
+    // } 
+    //   catch (error) {
+    //     print('error: $error');
+    //     _showAlertDialog('Error', error.toString());
+        
+    //   }
+  }
+ void _showAlertDialog(String title, String message) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+    );
+    showDialog(
+        context: context,
+        builder: (_) {
+          return alertDialog;
+        });
+  }
+   
 }
 
 class Order extends StatefulWidget {
+  final String id;
+  Order(this.id);
   @override
-  _OrderState createState() => _OrderState();
+  _OrderState createState() => _OrderState(id);
 }
 
 class _OrderState extends State<Order> with TickerProviderStateMixin {
   // final timerDuration = Duration(milliseconds: 2500);
-
+  final String id;
+  _OrderState(this.id);
   @override
   void initState() {
     super.initState();
@@ -566,7 +726,7 @@ class _OrderState extends State<Order> with TickerProviderStateMixin {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()),
+                      MaterialPageRoute(builder: (context) => MyHomePage(id)),
                     );
                   },
                 shape: RoundedRectangleBorder(

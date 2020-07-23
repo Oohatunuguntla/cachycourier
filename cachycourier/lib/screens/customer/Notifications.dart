@@ -73,6 +73,7 @@ void _notifications() async {
       var jsonResponse = convert.jsonDecode(resp.body);
       print('notifications of user');
      print('$jsonResponse');
+     print(jsonResponse['notification'][0]['notificationtext']);
      // Navigator.of(context).pushNamed('/userpage');
     }
     else{

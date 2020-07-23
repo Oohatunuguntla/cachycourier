@@ -32,7 +32,11 @@ const parcelschema=mongoose.Schema({
     },
     promocode:{
         type:String,
-    }
+    },
+    ispaid:{
+                type:Boolean,
+                
+            },
 
 });
 module.exports=mongoose.model('parcel',parcelschema);

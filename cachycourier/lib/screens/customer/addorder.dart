@@ -570,8 +570,13 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
       if (resp.statusCode == 200) {
     
       var jsonResponse = convert.jsonDecode(resp.body);
+      var url1="http://"+DotEnv().env['ipadress']+":"+DotEnv().env['port']+"/notifications/sendnotification";
       print('$jsonResponse');
       print("success order");
+       http.Response resp1=await http.post(url1,body:{'parcelid':jsonResponse['parcelid']});
+       if(resp.statusCode==200){
+          print('notification sent');
+       }
       Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Order(id)),

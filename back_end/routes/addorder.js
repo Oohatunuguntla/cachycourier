@@ -11,7 +11,9 @@ router.post('/', async (req, res, next) => {
     console.log(body)
     const newparcel=parcel(body);
     newparcel.save();
-    res.status(200).json({msg:'success'})
+    console.log('newparcelid');
+    console.log(newparcel._id);
+    res.status(200).json({msg:'success',parcelid:newparcel._id})
     }
     catch(err){
         console.log('fail add ordrer');
